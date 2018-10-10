@@ -8,38 +8,37 @@
 
 import Foundation
 
-class Developer: Hashable & Equatable {
+class Developer {
     
-    var name: String = ""
+    var index: Int
+    var leftSpoon: Spoon
+    var rightSpoon: Spoon
     
-    var leftSpoon = Spoon()
-    var rightSpoon = Spoon()
-    
-    func think(developer: Developer, leftSpoon: Spoon, rightSpoon: Spoon) {
-        developer.leftSpoon.pickUp(spoon: leftSpoon)
-        developer.rightSpoon.pickUp(spoon: rightSpoon)
+    init(index: Int, leftSpoon: Spoon, rightSpoon: Spoon) {
+        self.index = index
+        self.leftSpoon = leftSpoon
+        self.rightSpoon = rightSpoon
     }
     
-    func eat(developer: Developer, leftSpoon: Spoon, rightSpoon: Spoon) {
-        usleep(100)
-        developer.leftSpoon.putDown(spoon: leftSpoon)
-        developer.rightSpoon.putDown(spoon: rightSpoon)
+    func think() {
+        leftSpoon.pickUp()
+        rightSpoon.pickUp()
     }
     
-    func run(developer: Developer, leftSpoon: Spoon, rightSpoon: Spoon) {
-        think(developer: developer, leftSpoon: leftSpoon, rightSpoon: rightSpoon)
-        eat(developer: developer, leftSpoon: leftSpoon, rightSpoon: rightSpoon)
+    func eat() {
+        let eatTime = arc4random_uniform(UInt32(1e3))
+        print("Developer\(index) eating for \(Double(eatTime)/1e3)")
+        usleep(eatTime)
+        leftSpoon.putDown()
+        
+        usleep(eatTime)
+        rightSpoon.putDown()
+        print("Developer\(index) finished eating")
     }
     
-    // MARK: - Equatable
-    static func == (lhs: Developer, rhs: Developer) -> Bool {
-        return lhs.leftSpoon == rhs.leftSpoon &&
-            lhs.rightSpoon == rhs.rightSpoon
-    }
-    
-    // MARK: - Hashable
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(name)
+    func run() {
+        think()
+        eat()
     }
 }
 

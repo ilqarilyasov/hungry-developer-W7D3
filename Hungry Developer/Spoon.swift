@@ -8,26 +8,20 @@
 
 import Foundation
 
-class Spoon: Equatable {
+class Spoon {
     
-    var subSpoons: [Spoon] = []
     private var lock = NSLock()
+    let index: Int
     
-    func pickUp(spoon: Spoon) {
-        lock.lock()
-        subSpoons.append(spoon) // Writing
-        lock.unlock()
+    init(index: Int) {
+        self.index = index
     }
     
-    func putDown(spoon: Spoon) {
+    func pickUp() {
         lock.lock()
-        guard let index = subSpoons.index(of: spoon) else { return } // Reading
-        subSpoons.remove(at: index) // Writing
-        lock.unlock()
     }
     
-    // MARK: - Equatable
-    static func == (lhs: Spoon, rhs: Spoon) -> Bool {
-        return lhs.subSpoons == rhs.subSpoons
+    func putDown() {
+        lock.unlock()
     }
 }
