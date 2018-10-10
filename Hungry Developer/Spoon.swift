@@ -9,26 +9,25 @@
 import Foundation
 
 class Spoon: Equatable {
-
     
+    var subSpoons: [Spoon] = []
     private var lock = NSLock()
-    var spoons: [Spoon] = []
     
     func pickUp(spoon: Spoon) {
         lock.lock()
-        spoons.append(spoon)
+        subSpoons.append(spoon) // Writing
         lock.unlock()
     }
     
     func putDown(spoon: Spoon) {
         lock.lock()
-        guard let index = spoons.index(of: spoon) else { return }
-        spoons.remove(at: index)
+        guard let index = subSpoons.index(of: spoon) else { return } // Reading
+        subSpoons.remove(at: index) // Writing
         lock.unlock()
     }
     
     // MARK: - Equatable
     static func == (lhs: Spoon, rhs: Spoon) -> Bool {
-        return lhs.spoons == rhs.spoons
+        return lhs.subSpoons == rhs.subSpoons
     }
 }

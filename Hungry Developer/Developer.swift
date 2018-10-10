@@ -8,23 +8,27 @@
 
 import Foundation
 
-class Developer: Equatable {
+class Developer: Hashable & Equatable {
     
-    var developers: [Developer] = []
-    let leftSpoon = Spoon()
-    let rightSpoon = Spoon()
+    var name: String = ""
     
-    func think() {
-        // think() should pick up both spoons before returning
+    var leftSpoon = Spoon()
+    var rightSpoon = Spoon()
+    
+    func think(developer: Developer, leftSpoon: Spoon, rightSpoon: Spoon) {
+        developer.leftSpoon.pickUp(spoon: leftSpoon)
+        developer.rightSpoon.pickUp(spoon: rightSpoon)
     }
     
-    func eat() {
-        // eat() should pause for a random amount of time before putting both spoons down
-        // Hint: use usleep() to pause for a given number of microseconds
+    func eat(developer: Developer, leftSpoon: Spoon, rightSpoon: Spoon) {
+        usleep(100)
+        developer.leftSpoon.putDown(spoon: leftSpoon)
+        developer.rightSpoon.putDown(spoon: rightSpoon)
     }
     
-    func run() {
-        // Developer.run() should call think() then eat() over and over again forever
+    func run(developer: Developer, leftSpoon: Spoon, rightSpoon: Spoon) {
+        think(developer: developer, leftSpoon: leftSpoon, rightSpoon: rightSpoon)
+        eat(developer: developer, leftSpoon: leftSpoon, rightSpoon: rightSpoon)
     }
     
     // MARK: - Equatable
@@ -32,7 +36,19 @@ class Developer: Equatable {
         return lhs.leftSpoon == rhs.leftSpoon &&
             lhs.rightSpoon == rhs.rightSpoon
     }
+    
+    // MARK: - Hashable
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+    }
 }
+
+// INSTRUCTION:
+
+// Developer.run() should call think() then eat() over and over again forever
+// think() should pick up both spoons before returning
+// eat() should pause for a random amount of time before putting both spoons down
+// Hint: use usleep() to pause for a given number of microseconds
 
 // Create 5 spoons & 5 developers giving each developer a left and right spoon
 // Developers will of course share spoons
